@@ -1,0 +1,21 @@
+{
+  "name": "joshymcd-sst-templates",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "sst dev",
+    "deploy": "sst deploy",
+    "db:generate": "cd packages/db && sst shell drizzle-kit generate",
+    "db:migrate": "cd packages/db && sst shell drizzle-kit migrate",
+    "db:push": "cd packages/db && sst shell drizzle-kit push",
+    "db:studio": "cd packages/db && sst shell npx drizzle-kit studio"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.6",
+    "prettier": "^3.6.2",
+    "typescript": "5.9.2"
+  },
+  "packageManager": "pnpm@10.14.0",
+  "dependencies": {
+    "sst": "^3"
+  }
+}
