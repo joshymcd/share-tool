@@ -15,9 +15,16 @@ export default $config({
     };
   },
   async run() {
-    const ShareApp = new sst.aws.TanStackStart('ShareApp')
+    const table = new sst.aws.Dynamo("ShareTable", {
+      fields: {
+        shareId: "string",
+      },
+      primaryIndex: { hashKey: "shareId" }
+    }); 
+    const ShareApp = new sst.aws.TanStackStart('ShareApp', { link: [table] })
     return { 
       ShareApp: ShareApp.url,
+      ShareTable: table,
     };
   },
 });

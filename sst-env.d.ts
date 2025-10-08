@@ -9,6 +9,10 @@ declare module "sst" {
       "type": "sst.aws.TanstackStart"
       "url": string
     }
+    "ShareTable": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
   }
 }
 /// <reference path="sst-env.d.ts" />
