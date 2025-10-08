@@ -1,10 +1,11 @@
+/// <reference types="vite/client" />
+
+import React from 'react'
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
+ 
 
-import Header from '../components/Header'
-
-import appCss from '../styles.css?url'
+import appCss from '@/styles.css?url'
+import { Providers } from '@/providers/Providers'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -37,20 +38,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
-        <Header />
-        {children}
-        <TanStackDevtools
-          config={{
-            position: 'bottom-right',
-          }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
+      <body className="h-dvh w-dvw bg-gray-800 flex flex-col items-center justify-center"> 
+        <Providers>
+          {children}
+        </Providers>
+        
         <Scripts />
       </body>
     </html>
