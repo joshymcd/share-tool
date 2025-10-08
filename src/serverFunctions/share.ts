@@ -4,6 +4,7 @@ import { DynamoDBClient, GetItemCommand, PutItemCommand } from "@aws-sdk/client-
 import { nanoid } from "nanoid";
 import { Resource } from 'sst';
 import { z } from 'zod';
+import { formatText, formatTextSchema } from './format';
 
 
 const shareData = z.object({
@@ -12,6 +13,7 @@ const shareData = z.object({
 export const createShare = createServerFn()
     .inputValidator(shareData)
     .handler(async ({ data }) => { 
+        const formattedText = await formatText({ data: { text: data.text } })
         const client = new DynamoDBClient({});
         const shareId = nanoid();
         await client.send(
@@ -20,6 +22,7 @@ export const createShare = createServerFn()
               Item: {
                 shareId: { S: shareId },
                 rawData: { S: data.text },
+                formattedData: { S: JSON.stringify(formattedText) },
               },
             })
           );
@@ -40,5 +43,6 @@ export const getShare = createServerFn()
         return {
             shareId: result.Item.shareId.S!,
             rawData: result.Item.rawData.S!,
+            formattedData: formatTextSchema.parse(JSON.parse(result.Item.formattedData.S!)),
         };
     })
