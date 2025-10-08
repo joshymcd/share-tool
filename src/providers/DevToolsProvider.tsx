@@ -1,5 +1,6 @@
 import { TanStackDevtools } from "@tanstack/react-devtools"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 export const DevToolsProvider = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -13,6 +14,10 @@ export const DevToolsProvider = ({ children }: { children: React.ReactNode }) =>
             {
               name: 'Tanstack Router',
               render: <TanStackRouterDevtoolsPanel />,
+            },
+            {
+              name: 'React Query',
+              render: <ReactQueryDevtools />,
             },
           ]}
         />

@@ -1,9 +1,13 @@
 import { DevToolsProvider } from "./DevToolsProvider"
+import { TanstackQuery } from "./TanstackQuery"
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
-    <DevToolsProvider>
-      {children}
-    </DevToolsProvider>
+    <TanstackQuery>
+        <DevToolsProvider>
+        {children}
+        </DevToolsProvider>
+    </TanstackQuery>
+
   )
 }
