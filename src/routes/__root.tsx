@@ -38,7 +38,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className="h-dvh w-dvw  flex flex-col items-center justify-center"> 
+      <body className="h-dvh container mx-auto flex flex-col items-center justify-center"> 
         <Providers>
           {children}
         </Providers>

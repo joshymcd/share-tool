@@ -11,7 +11,7 @@ export const Route = createFileRoute('/')({
 })
 
 function App() {   
-  const [text, setText] = useState<string>(DUMMY_TEXT) 
+  const [text, setText] = useState<string>("") 
   const navigate = useNavigate()
   const createShareFn = useServerFn(createShare)
   const { mutate: createShareMut } = useMutation({
@@ -25,9 +25,9 @@ function App() {
     }
   })
 
-  return <div className="container mx-auto flex flex-col gap-4 h-full ">
+  return <div className="container mx-auto flex flex-col gap-4 h-full  py-12">
     <h1 className="text-2xl font-bold text-center">Share Tool</h1>
-    <Textarea className="w-full" rows={10} placeholder="Paste data here..." value={text}  onChange={(e) => setText(e.currentTarget.value)} />
+    <Textarea  className="flex-1 w-full" rows={10} placeholder="Paste data here..." value={text}  onChange={(e) => setText(e.currentTarget.value)} />
     <Button onClick={() => createShareMut({ data: { text: text } })}>Format</Button>  
   </div>
 }

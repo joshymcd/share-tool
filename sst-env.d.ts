@@ -5,6 +5,10 @@
 
 declare module "sst" {
   export interface Resource {
+    "OpenRouterApiKey": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "ShareApp": {
       "type": "sst.aws.TanstackStart"
       "url": string

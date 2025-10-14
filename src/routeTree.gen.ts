@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ShareIdRouteImport } from './routes/$shareId'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ShareIdIndexRouteImport } from './routes/$shareId/index'
+import { Route as ShareIdRawRouteImport } from './routes/$shareId/raw'
+import { Route as ShareIdOriginalRouteImport } from './routes/$shareId/original'
 
 const ShareIdRoute = ShareIdRouteImport.update({
   id: '/$shareId',
@@ -22,31 +25,65 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShareIdIndexRoute = ShareIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ShareIdRoute,
+} as any)
+const ShareIdRawRoute = ShareIdRawRouteImport.update({
+  id: '/raw',
+  path: '/raw',
+  getParentRoute: () => ShareIdRoute,
+} as any)
+const ShareIdOriginalRoute = ShareIdOriginalRouteImport.update({
+  id: '/original',
+  path: '/original',
+  getParentRoute: () => ShareIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/$shareId': typeof ShareIdRoute
+  '/$shareId': typeof ShareIdRouteWithChildren
+  '/$shareId/original': typeof ShareIdOriginalRoute
+  '/$shareId/raw': typeof ShareIdRawRoute
+  '/$shareId/': typeof ShareIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$shareId': typeof ShareIdRoute
+  '/$shareId/original': typeof ShareIdOriginalRoute
+  '/$shareId/raw': typeof ShareIdRawRoute
+  '/$shareId': typeof ShareIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/$shareId': typeof ShareIdRoute
+  '/$shareId': typeof ShareIdRouteWithChildren
+  '/$shareId/original': typeof ShareIdOriginalRoute
+  '/$shareId/raw': typeof ShareIdRawRoute
+  '/$shareId/': typeof ShareIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$shareId'
+  fullPaths:
+    | '/'
+    | '/$shareId'
+    | '/$shareId/original'
+    | '/$shareId/raw'
+    | '/$shareId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$shareId'
-  id: '__root__' | '/' | '/$shareId'
+  to: '/' | '/$shareId/original' | '/$shareId/raw' | '/$shareId'
+  id:
+    | '__root__'
+    | '/'
+    | '/$shareId'
+    | '/$shareId/original'
+    | '/$shareId/raw'
+    | '/$shareId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ShareIdRoute: typeof ShareIdRoute
+  ShareIdRoute: typeof ShareIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +102,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$shareId/': {
+      id: '/$shareId/'
+      path: '/'
+      fullPath: '/$shareId/'
+      preLoaderRoute: typeof ShareIdIndexRouteImport
+      parentRoute: typeof ShareIdRoute
+    }
+    '/$shareId/raw': {
+      id: '/$shareId/raw'
+      path: '/raw'
+      fullPath: '/$shareId/raw'
+      preLoaderRoute: typeof ShareIdRawRouteImport
+      parentRoute: typeof ShareIdRoute
+    }
+    '/$shareId/original': {
+      id: '/$shareId/original'
+      path: '/original'
+      fullPath: '/$shareId/original'
+      preLoaderRoute: typeof ShareIdOriginalRouteImport
+      parentRoute: typeof ShareIdRoute
+    }
   }
 }
 
+interface ShareIdRouteChildren {
+  ShareIdOriginalRoute: typeof ShareIdOriginalRoute
+  ShareIdRawRoute: typeof ShareIdRawRoute
+  ShareIdIndexRoute: typeof ShareIdIndexRoute
+}
+
+const ShareIdRouteChildren: ShareIdRouteChildren = {
+  ShareIdOriginalRoute: ShareIdOriginalRoute,
+  ShareIdRawRoute: ShareIdRawRoute,
+  ShareIdIndexRoute: ShareIdIndexRoute,
+}
+
+const ShareIdRouteWithChildren =
+  ShareIdRoute._addFileChildren(ShareIdRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ShareIdRoute: ShareIdRoute,
+  ShareIdRoute: ShareIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
